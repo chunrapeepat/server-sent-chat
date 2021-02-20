@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import { sendMessage } from "./utils/chat-api";
 
-function ChatRoom() {
+interface ChatRoomProps {
+  username: string;
+  endpointURL: string;
+}
+
+function ChatRoom({ username, endpointURL }: ChatRoomProps) {
+  const [message, setMessage] = useState("");
+
+  const handleSend = async () => {
+    if (!message) {
+      return;
+    }
+    await sendMessage(message, username, endpointURL);
+  };
+
   return (
     <div>
       <div>Chat message will display here</div>
       <hr />
       <span>Message: </span>
-      <input type="text" placeholder="" />
+      <input type="text" onChange={(e) => setMessage(e.target.value)} />
 
-      <button>Send</button>
+      <button onClick={handleSend}>Send</button>
     </div>
   );
 }
