@@ -13,6 +13,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Define endpoints
-app.get("/", (req, res) => res.send("Hi"));
+app.post("/message", (req: Request, res: Response) => {
+  const { user, message } = req.body;
+  if (!user || !message) {
+    return res.status(400).json({ error: true, message: "invalid payload" });
+  }
+  // TODO: boardcast message to all client
+  return res.status(200).json({ success: true });
+});
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
